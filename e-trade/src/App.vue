@@ -4,13 +4,11 @@
     <router-view/>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'App'
+  name: 'App',
 }
 </script>
-
 <style lang="less">
 @import url('./assets/c/layout.less');
 @import url('./assets/c/common.less');

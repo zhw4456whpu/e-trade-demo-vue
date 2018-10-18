@@ -19,6 +19,12 @@ var apiData = require('../apiData.json');
 var apiRoutes = express.Router();
 app.use('/api',apiRoutes);
 
+/******************上传组件 */
+process.env.TMPDIR = 'tmp'; // to avoid the EXDEV rename error, see http://stackoverflow.com/q/21071303/76173
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+var uploader = require('./uploader-node.js')('tmp');
+
 /******************************* mock options end */
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -54,6 +60,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     before(app){
+      // 服务器的公开目录
+      app.use(express.static(__dirname + '/public'));
+      app.use(express.static(__dirname + '/../../dist'));
+      // Configure access control allow origin header stuff
+      var ACCESS_CONTROLL_ALLOW_ORIGIN = true;
+
       app.param(['userName','pageNo','pageSize'],function(req,res,next,value){
         console.log("app.param");
         next();
@@ -108,7 +120,43 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           status:200,
           data:{}
         })
+      }),
+      // Handle uploads through Uploader.js
+      app.post('/upload', multipartMiddleware, function(req, res) {
+        uploader.post(req, function(status, filename, original_filename, identifier) {
+          console.log('POST', status, original_filename, identifier);
+          if (ACCESS_CONTROLL_ALLOW_ORIGIN) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "content-type")
+          }
+          setTimeout(function () {
+            res.send(status);
+          }, 500);
+        });
+      }),
+      app.options('/upload', function(req, res){
+        console.log('OPTIONS');
+        if (ACCESS_CONTROLL_ALLOW_ORIGIN) {
+          res.header("Access-Control-Allow-Origin", "*");
+          res.header("Access-Control-Allow-Headers", "content-type")
+        }
+        res.status(200).send();
+      }),
+      // Handle status checks on chunks through Uploader.js
+      app.get('/upload', function(req, res) {
+        uploader.get(req, function(status, filename, original_filename, identifier) {
+          console.log('GET', status);
+          if (ACCESS_CONTROLL_ALLOW_ORIGIN) {
+            res.header("Access-Control-Allow-Origin", "*");
+          }
+
+          res.status(status == 'found' ? 200 : 204).send(status);
+        });
+      }),
+      app.get('/download/:identifier', function(req, res) {
+        uploader.write(req.params.identifier, res);
       })
+
     }
   },
   plugins: [

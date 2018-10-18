@@ -12,6 +12,17 @@ Vue.use(lazyLoad,{
 })
 Vue.use(iview)
 Vue.config.productionTip = false
+
+import uploader from 'vue-simple-uploader'
+import Upload from './components/common/Upload'
+Vue.use(uploader)
+/* eslint-disable no-new */
+new Vue({
+    render(createElement) {
+        return createElement(Upload)
+    }
+}).$mount('#upload')
+
 //定义路由beforeEach函数
 /* router.beforeEach((to,from,next) =>{
   if(to.name.toLocaleLowerCase.indexof('api') >-1){

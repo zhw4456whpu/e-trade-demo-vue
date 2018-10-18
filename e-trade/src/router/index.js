@@ -5,6 +5,10 @@ import Login from '@/components/login/Login'
 import Home from '@/components/home/Home'
 import Layout from '@/components/common/Layout'
 import ItemId from '@/components/item/ItemId'
+import Test from '@/components/Test'
+import TestCss from '@/components/test/TestCss'
+import TopTree from '@/components/common/TuopuTree'
+import Upload from '@/components/common/Upload'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +44,26 @@ export default new Router({
           component:ItemId
         }
       ]
+    },
+    {
+      path:'/test',
+      name:'Test',
+      component:Test
+    },
+    {
+      path:'/test/testcss',
+      name:'TestCss',
+      component:TestCss
+    },
+    {
+      path:'/toptree',
+      name:'TopTree',
+      component:TopTree
+    },
+    {
+      path:'/upload',
+      name:'Upload',
+      component:Upload
     }
   ]
 })
