@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/login/Login'
 import Home from '@/components/home/Home'
+import Index from '@/components/home/Index'
 import Layout from '@/components/common/Layout'
 import ItemId from '@/components/item/ItemId'
 import Test from '@/components/Test'
@@ -32,6 +33,11 @@ export default new Router({
       path:'/home',
       name:'Home',
       component:Home
+    },
+    {
+      path:'/index',
+      name:'Index',
+      component:Index
     },
     {
       path:'/item',
