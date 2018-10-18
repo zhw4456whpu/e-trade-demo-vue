@@ -87,15 +87,22 @@
                 <Sider hide-trigger :style="{background: '#fff',width: '300px',maxWidth:'300px',minWidth:'300px'}">
                     <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
                         <Submenu name="1" v-for="(item,index) in curSubMenus">
-
-                            <template slot="title">
-                                <span >
-                                <Icon :type="item.icon"></Icon>
-                                {{item.name}}
-                                </span>
-                            </template>
                             <template v-if="item.children && item.children.length> 0">
-                                <MenuItem  v-for="sitem in item.children" :name="sitem.name">{{sitem.name}}</MenuItem>
+                                <template slot="title" >
+                                    <Icon :type="item.icon"></Icon>
+                                    {{item.name}}
+                                </template>
+                                <template>
+                                    <MenuItem v-for="sitem in item.children" :name="sitem.name" @click.native="goto(sitem.path)">{{sitem.name}}</MenuItem>
+                                </template>
+                            </template>
+                            <template v-else>
+                                <template slot="title" >
+                                    <span @click="goto(item.path)">
+                                        <Icon :type="item.icon"></Icon>
+                                        {{item.name}}
+                                    </span>
+                                </template>
                             </template>
                         </Submenu>
                     </Menu>
@@ -145,81 +152,97 @@
                     /******数据统计 */
                     {
                         name: '统计概况',
+                        path: 'statics',
                         parent: '数据统计',
                         icon: 'ios-stats',
                         children: [
                             {
-                                name: 'a概况'
+                                name: 'a概况',
+                                path: 'test',
                             },
                             {
-                                name: 'b概况'
+                                name: 'b概况',
+                                path: 'test',
                             },
                             {
-                                name: 'c概况'
+                                name: 'c概况',
+                                path: 'test',
                             }
                         ]
                     },
                     {
                         name: '访客与对话',
+                        path: 'visitor',
                         parent: '数据统计',
                         icon: 'ios-statics',
                     },
                     {
                         name: '工单统计',
+                        path: 'orderstatics',
                         parent: '数据统计',
                         icon: 'ios-statics',
                     },
                     {
                         name: '客服质量',
+                        path: 'kfquality',
                         parent: '数据统计',
                         icon: 'ios-statics',
                     },
                     /****** 客服管理*/
                     {
                         name: '客服',
+                        path: 'kefu',
                         parent: '客服管理',
                         icon: 'ios-statics',
                     },
                     {
                         name: '技能组',
+                        path: 'skillgroup',
                         parent: '客服管理',
                         icon: 'ios-statics',
                     },
                     /********* 系统设置*/
                     {
                         name: '企业信息',
+                        path: 'enterpriseinfo',
                         parent: '系统设置',
                         icon: 'ios-statics',
                     },
                     {
                         name: '系统开关',
+                        path: 'sysswitch',
                         parent: '系统设置',
                         icon: 'ios-statics',
                     },
                     {
                         name: '时间计划',
+                        path: 'plan',
                         parent: '系统设置',
                         icon: 'ios-statics',
                     },
                     {
                         name: '会话标签',
+                        path: 'sessiontag',
                         parent: '系统设置',
                         icon: 'ios-statics',
                     },
                     {
                         name: '会话分配规则',
+                        path: 'sessionrule',
                         parent: '系统设置',
                         icon: 'ios-statics',
                     },
                     /************营销数据 */
                     {
                         name: '营销数据',
+                        path: 'yxdata',
                         parent: '营销数据',
                         icon: 'ios-statics',
                     },
                     /******客户中心*/
                     {
                         name: '客户中心',
+                        path: 'customercenter',
                         parent: '客户中心',
                         icon: 'ios-statics',
                     }
@@ -235,6 +258,14 @@
                 this.curSubMenus = this.subMenus.filter(item =>{
                     return item.parent == name;
                 });
+            },
+            goto(path){
+                console.log("goto :%s",path);
+                this.$router.push(
+                    {
+                        path: path,
+                    }
+                )
             }
         },
         mounted(){
