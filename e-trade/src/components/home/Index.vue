@@ -93,12 +93,13 @@
                                     {{item.name}}
                                 </template>
                                 <template>
-                                    <MenuItem v-for="sitem in item.children" :name="sitem.name" @click.native="goto(sitem.path)">{{sitem.name}}</MenuItem>
+                                    <MenuItem v-for="(sitem,sindex) in item.children" :name="sitem.name" 
+                                    @click.native="goto(sitem.path,sindex)" :class="{'ivu-menu-item-active ivu-menu-item-selected':(curSubMenuItem.index == sindex && curSubMenuItem.path == sitem.path)}">{{sitem.name}}</MenuItem>
                                 </template>
                             </template>
                             <template v-else>
                                 <template slot="title" >
-                                    <span @click="goto(item.path)">
+                                    <span @click="goto(item.path,index)">
                                         <Icon :type="item.icon"></Icon>
                                         {{item.name}}
                                     </span>
@@ -109,7 +110,7 @@
                 </Sider>
                 <Layout :style="{padding: '0 24px 24px'}">
                     <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-                        Content
+                        <router-view />
                     </Content>
                 </Layout>
             </Layout>
@@ -126,6 +127,10 @@
                     index: 0
                 },
                 curSubMenus:[],
+                curSubMenuItem: {
+                    path: '',
+                    index: 0
+                },
                 topNav: [
                     {
                         name: '数据统计',
@@ -152,29 +157,29 @@
                     /******数据统计 */
                     {
                         name: '统计概况',
-                        path: 'statics',
+                        path: 'summerystatistics',
                         parent: '数据统计',
                         icon: 'ios-stats',
-                        children: [
-                            {
-                                name: 'a概况',
-                                path: 'test',
-                            },
-                            {
-                                name: 'b概况',
-                                path: 'test',
-                            },
-                            {
-                                name: 'c概况',
-                                path: 'test',
-                            }
-                        ]
                     },
                     {
                         name: '访客与对话',
                         path: 'visitor',
                         parent: '数据统计',
                         icon: 'ios-statics',
+                        children:[
+                            {
+                                name: 'a概况2',
+                                path: 'test',
+                            },
+                            {
+                                name: 'b概况3',
+                                path: '3test3',
+                            },
+                            {
+                                name: 'c概况4',
+                                path: '4test4',
+                            }
+                        ]
                     },
                     {
                         name: '工单统计',
@@ -259,11 +264,12 @@
                     return item.parent == name;
                 });
             },
-            goto(path){
-                console.log("goto :%s",path);
+            goto(path,index){
+                this.curSubMenuItem.path = path;
+                this.curSubMenuItem.index = index;
                 this.$router.push(
                     {
-                        path: path,
+                        path: '/index/' + path,
                     }
                 )
             }

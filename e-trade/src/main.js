@@ -17,11 +17,11 @@ import uploader from 'vue-simple-uploader'
 import Upload from './components/common/Upload'
 Vue.use(uploader)
 /* eslint-disable no-new */
-new Vue({
+/*new Vue({
     render(createElement) {
         return createElement(Upload)
     }
-}).$mount('#upload')
+}).$mount('#upload')*/
 
 //定义路由beforeEach函数
 /* router.beforeEach((to,from,next) =>{

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/login/Login'
 import Home from '@/components/home/Home'
 import Index from '@/components/home/Index'
+import SummeryStatistics from '@/components/statics/SummeryStatistics'
 import Layout from '@/components/common/Layout'
 import ItemId from '@/components/item/ItemId'
 import Test from '@/components/Test'
@@ -37,7 +38,19 @@ export default new Router({
     {
       path:'/index',
       name:'Index',
-      component:Index
+      component:Index,
+      children: [
+        {
+          path: 'test',
+          name: 'Test',
+          component: Test
+        },
+        {
+          path: 'summerystatistics',
+          name: 'Summerystatistics',
+          component: SummeryStatistics
+        },
+      ]
     },
     {
       path:'/item',
